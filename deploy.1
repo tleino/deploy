@@ -1,0 +1,28 @@
+.Dd $Mdocdate: Oct 17 2021 $
+.Dt DEPLOY 1
+.Os
+.Sh NAME
+.Nm deploy ,
+.Nm undeploy
+.Nd deploy / undeploy configuration
+.Sh SYNOPSIS
+.Nm deploy
+.Ar module
+.Op Ar host
+.Nm undeploy
+.Ar module
+.Op Ar host
+.Sh DESCRIPTION
+.Nm deploy
+and
+.Nm undeploy
+are a simple configuration management script thats runs commands from
+a script and executes them either locally or through ssh on a host.
+.Sh EXAMPLES
+Deploys commands to a host.
+.Pp
+.Dl $ deploy module user@host
+.Pp
+Undeploys a module from a host.
+.Pp
+.Dl $ undeploy module user@host

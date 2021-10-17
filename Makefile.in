@@ -7,6 +7,9 @@ libdir = $(exec_prefix)/lib
 datarootdir = $(prefix)/share
 mandir = $(datarootdir)/man
 
+INSTALL = install
+INSTALLFLAGS = -D
+
 all:
 
 install:
@@ -15,9 +18,14 @@ install:
 	sed s,%%PREFIX%%,$(prefix), deploy >$(DESTDIR)$(bindir)/deploy
 	chmod ugo+x $(DESTDIR)$(bindir)/deploy
 	ln -f -s $(DESTDIR)$(bindir)/deploy $(DESTDIR)$(bindir)/undeploy
+	$(INSTALL) $(INSTALLFLAGS) -m 444 deploy.1 \
+		$(DESTDIR)$(mandir)/man1/deploy.1
+
 
 uninstall:
 	rm -f $(DESTDIR)$(bindir)/deploy
 	rm -f $(DESTDIR)$(bindir)/undeploy
 	rm -f $(DESTDIR)$(datarootdir)/deploy/template
 	rmdir $(DESTDIR)$(datarootdir)/deploy
+	rm -f $(DESTDIR)$(mandir)/man1/deploy.1
+
