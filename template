@@ -1,0 +1,45 @@
+#!/bin/sh
+
+mktimestamp() {
+	TIMESTAMP=$(date +%Y%m%d)
+	echo $TIMESTAMP
+}
+
+check_motd() {
+	grep "$MODULE" /etc/motd 1>/dev/null
+	if [ $? -gt 0 ] ; then
+		return 1
+	fi
+	sed -i "/$MODULE/d" /etc/motd
+	return 0
+}
+
+add_motd() {
+	logger "deployed $MODULE"
+	echo >>/etc/motd $(mktimestamp) $MODULE
+}
+
+remove_motd() {
+	sed -i "/$MODULE/d" /etc/motd
+}
+
+update_motd() {
+	remove_motd
+	add_motd
+}
+
+deploy() {
+	case $1 in
+		uninstall)
+			check_motd && do_uninstall
+			;;
+		install)
+			do_install && update_motd
+			;;
+		*)
+			echo "usage: $MODULE install | uninstall"
+			exit 1
+	esac
+}
+
+%%MODULE_SCRIPT%%

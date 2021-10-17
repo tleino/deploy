@@ -1,0 +1,11 @@
+#!/bin/sh
+# Usage: ./configure [install prefix]
+
+prefix=/usr/local
+if [ "$#" -eq 1 ] ; then prefix=$1 ; fi
+echo "prefix=${prefix}"
+
+echo "create: Makefile"
+echo '# Automatically generated from Makefile.in by configure' >Makefile
+echo >>Makefile
+sed -e "s|@prefix@|${prefix}|g" Makefile.in >>Makefile

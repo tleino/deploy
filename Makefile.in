@@ -1,0 +1,23 @@
+SHELL = /bin/sh
+
+prefix = @prefix@
+exec_prefix = $(prefix)
+bindir = $(exec_prefix)/bin
+libdir = $(exec_prefix)/lib
+datarootdir = $(prefix)/share
+mandir = $(datarootdir)/man
+
+all:
+
+install:
+	mkdir -p $(DESTDIR)$(datarootdir)/deploy
+	cp template $(DESTDIR)$(datarootdir)/deploy/
+	sed s,%%PREFIX%%,$(prefix), deploy >$(DESTDIR)$(bindir)/deploy
+	chmod ugo+x $(DESTDIR)$(bindir)/deploy
+	ln -f -s $(DESTDIR)$(bindir)/deploy $(DESTDIR)$(bindir)/undeploy
+
+uninstall:
+	rm -f $(DESTDIR)$(bindir)/deploy
+	rm -f $(DESTDIR)$(bindir)/undeploy
+	rm -f $(DESTDIR)$(datarootdir)/deploy/template
+	rmdir $(DESTDIR)$(datarootdir)/deploy

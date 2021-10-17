@@ -1,0 +1,16 @@
+Simple configuration management system
+
+...for people who think something like Ansible is overkill.
+
+# Install deploy to your preferred prefix
+$ ./configure ~
+$ make install
+
+# View example
+$ cat example
+
+# Deploy it
+$ deploy example root@host
+
+# Undeploy it
+$ undeploy example root@host

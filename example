@@ -1,0 +1,9 @@
+# This example shows how to add/remove a package using OpenBSD's pkg tools.
+
+do_uninstall() {
+	pkg_delete -vx example
+}
+
+do_install() {
+	pkg_add -vx example
+}

@@ -1,0 +1,38 @@
+#!/bin/sh
+
+PREFIX=%%PREFIX%%
+if [ "$(echo $PREFIX | grep %%)" == "" ] ; then
+	TEMPLATE=${PREFIX}/share/deploy/template
+else
+	TEMPLATE=template
+fi
+
+do_combine() {
+	sed -e "/%%MODULE_SCRIPT%%/r $1" -e '/%%MODULE_SCRIPT%%/d' \
+		$TEMPLATE
+	echo MODULE=$1
+	echo deploy $2
+}
+
+if [ $# -lt 1 ] ; then
+	echo usage: $0 MODULE [HOST]
+	exit 1
+fi
+MODULE=$1
+if [ $# -eq 2 ] ; then
+	HOST=$2
+fi
+
+if [ ! -e $MODULE ] ; then
+	echo Unknown module
+	exit 1
+fi
+
+ACTION=install
+[ "$(basename $0)" == "undeploy" ] && ACTION=uninstall
+
+if [ "$HOST" == "" ] ; then
+	do_combine $MODULE $ACTION | sh
+else
+	do_combine $MODULE $ACTION | ssh $HOST
+fi
